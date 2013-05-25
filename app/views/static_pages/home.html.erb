@@ -1,13 +1,10 @@
 <% provide(:title, 'Eqlea') %>
-<h1>Eqlea</h1>
-<ul>
-  <li><a href="#"> What is this website? </a></li>
-  <li> Cheatsheet: <a href="#">Markdown</a> / <a href="#">LaTeX</a> </li>
-  <li><a href="#"> Guide </a></li>
-</ul>
-<p>
-  Log in: email, password
-</p>
-<p>
-  Sign up: email, password, password confirmation
-</p>
+
+<%= link_to "About This Website", '#', id: "home-about-link" %>
+
+<form method="POST" action="/signinup" id="sign-in-form">
+  <input type="text" name="username" placeholder="Email" /><br />
+  <input type="password" name="password" placeholder="Password" /><br />
+  <input type="checkbox" name="signup" value="signup">Sign up 
+  <input type="submit" value="Sign in" />
+</form>
