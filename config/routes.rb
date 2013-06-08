@@ -1,6 +1,11 @@
 WikiApp::Application.routes.draw do
-  root to: 'static_pages#home'
+  
+  resources :users, only: [:index, :show, :update, :destroy]
+  
 
+  root to: 'static_pages#home', via: :get
+  root to: 'users#create', via: :post
+  
   # The priority is based upon order of creation:
   # first created -> highest priority.
 

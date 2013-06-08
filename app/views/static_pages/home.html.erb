@@ -2,9 +2,20 @@
 
 <%= link_to "About This Website", '#', id: "home-about-link" %>
 
-<form method="POST" action="/signinup" id="sign-in-form">
-  <input type="text" name="username" placeholder="Email" /><br />
-  <input type="password" name="password" placeholder="Password" /><br />
-  <input type="checkbox" name="signup" value="signup">Sign up 
+<!--
+<form method="POST" action="/signinup" id="sign-in-form2">
+  <input id="email-input" type="text" name="email" placeholder="Email" />
+  <input type="password" name="password" placeholder="Password" />
+  <label><input type="checkbox" name="signup" value="signup" /> Sign up</label>
   <input type="submit" value="Sign in" />
 </form>
+-->
+
+<%= form_tag do %>
+  <%= render 'shared/error_messages' %>
+  <%= text_field_tag :email, nil, placeholder: "Email" %>
+  <%= password_field_tag :password, nil, placeholder: "Password" %>
+  <%= password_field_tag :password_confirmation, nil, placeholder: "Confirm Password" %>
+  <label><%= check_box_tag :sign_up? %> Sign up</label>
+  <%= submit_tag("Sign in") %>
+<% end %>
