@@ -13,29 +13,30 @@ class UsersController < ApplicationController
 
       if @user.save
         # Sign in as first time user
+        sign_in @user
         flash[:success] = "Welcome to the Sample App!"
         redirect_to root_path
-        return
+      else
+        # Failed to sign up
+        render 'static_pages/home'
       end
 
-      # Failed to sign up
-      render 'static_pages/home'
       return
     end
 
     # Sign in as regular (non-first time) user
-    redirect_to root_path
-
-=begin
-    @user = User.new(params[:user])
-    @user.name = @user.email.split('@')[0]
-
-    if @user.save
-      #redirect_to @user
-      render 'static_pages/home'
+    user = User.find_by_email(params[:email].downcase)
+    if user && user.authenticate(params[:password])
+      sign_in user
+      redirect_to root_path
     else
-      render 'static_pages/home'#'static_pages/home' # Need to move def create to static_pages_controller
+      flash[:error] = 'Invalid email/password combination'
+      redirect_to root_path
     end
-=end
+  end
+
+  def signout
+    sign_out
+    redirect_to root_url
   end
 end

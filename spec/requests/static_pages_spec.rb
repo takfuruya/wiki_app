@@ -8,6 +8,8 @@ describe "Static pages" do
     before { visit root_path }
 
     it { should have_selector('title', :text => "Eqlea") }
+    it { should have_selector('a', :text => "About") }
+    it { should have_submit_button("Sign in") }
   end
 
   describe "signup" do
@@ -47,10 +49,42 @@ describe "Static pages" do
         before { click_button submit }
         let(:user) { User.find_by_email('user@example.com') }
 
-        #it { should have_selector('title', text: user.name) }
+        it { should have_selector('h1', text: user.name) }
         it { should have_selector('div.alert.alert-success', text: 'Welcome') }
+        it { should have_link('Sign out') }
       end
     end
   end
 
+  describe "signin" do
+    before { visit root_path }
+
+    describe "with invalid information" do
+      before { click_button "Sign in" }
+
+      it { should have_selector('title', text: 'Eqlea') }
+      it { should have_error_message('Invalid') }
+
+      # Invalid input error should not appear twice
+      describe "after visiting another page" do
+        before { visit root_path }
+        it { should_not have_selector('div.alert.alert-error') }
+      end
+    end
+
+    describe "with valid information" do
+      let(:user) { FactoryGirl.create(:user) }
+      before { valid_signin(user) }
+      
+      it { should have_selector('title', text: 'Eqlea') }
+      it { should have_selector('h1', text: user.name) }
+      it { should have_link('Public profile', href: user_path(user)) }
+      it { should have_link('Sign out', href: signout_path) }
+
+      describe "followed by signout" do
+        before { click_link "Sign out" }
+        it { should have_submit_button("Sign in") }
+      end
+    end
+  end
 end

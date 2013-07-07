@@ -1,11 +1,11 @@
 WikiApp::Application.routes.draw do
   
   resources :users, only: [:index, :show, :update, :destroy]
-  
 
-  root to: 'static_pages#home', via: :get
-  root to: 'users#create', via: :post
-  
+  root              to: 'static_pages#home', via: :get
+  root              to: 'users#create',      via: :post
+  match '/signout', to: 'users#signout',     via: :delete
+
   # The priority is based upon order of creation:
   # first created -> highest priority.
 
