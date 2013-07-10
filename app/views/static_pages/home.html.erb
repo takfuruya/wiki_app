@@ -20,9 +20,21 @@
     <label><%= check_box_tag :sign_up? %> New user</label>
     <%= submit_tag("Sign in") %>
   <% end %>
+
 <% else %>
+
   <h1><%= current_user.name %></h1>
   <p>You Are Signed In</p>
-  <%= link_to "Sign out", signout_path, method: "delete" %>
+  <%= link_to "Sign out", root_path, method: "delete" %>
   <%= link_to "Public profile", current_user %>
+  
+  <%= form_tag user_path(current_user), method: :put do %>
+    <%= render 'shared/error_messages' %>
+    <%= text_field_tag :name, current_user.name %>
+    <%= text_field_tag :email, current_user.email %>
+    <%= password_field_tag :password, nil, placeholder: "Password" %>
+    <%= password_field_tag :password_confirmation, nil, placeholder: "Confirm Password" %>
+    <%= submit_tag("Save changes") %>
+  <% end %>
+
 <% end %>

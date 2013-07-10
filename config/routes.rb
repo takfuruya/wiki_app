@@ -4,7 +4,7 @@ WikiApp::Application.routes.draw do
 
   root              to: 'static_pages#home', via: :get
   root              to: 'users#create',      via: :post
-  match '/signout', to: 'users#signout',     via: :delete
+  root              to: 'users#signout',     via: :delete
 
   # The priority is based upon order of creation:
   # first created -> highest priority.
