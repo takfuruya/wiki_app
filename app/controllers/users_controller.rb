@@ -18,7 +18,7 @@ class UsersController < ApplicationController
   end
 
   def create
-    if params[:sign_up?]
+    if params[:sign_up?] && !signed_in?
       @user = User.new
       @user.email = params[:email]
       @user.password = params[:password]
@@ -39,6 +39,10 @@ class UsersController < ApplicationController
     end
 
     # Sign in as regular (non-first time) user.
+    if params[:email].nil?
+      redirect_to root_url
+      return
+    end
     user = User.find_by_email(params[:email].downcase)
     if user && user.authenticate(params[:password])
       sign_in user

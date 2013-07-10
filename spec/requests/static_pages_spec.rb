@@ -162,5 +162,18 @@ describe "Static pages" do
         specify { response.should redirect_to(root_path) }
       end
     end
+
+    describe "as signed-in users" do
+      let(:user) { FactoryGirl.create(:user) }
+      before do
+        visit root_path
+        valid_signin user
+      end
+
+      describe "submitting a POST request to the Users#create action" do
+        before { post root_path, sign_up?: true }
+        specify { response.should redirect_to(root_path) }
+      end
+    end
   end
 end
