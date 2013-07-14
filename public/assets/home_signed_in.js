@@ -1,0 +1,1 @@
+function windowLoadListener(a){var b=document.getElementById("edit_link");b.addEventListener("click",editLinkClickListener)}function editLinkClickListener(a){var b=document.getElementById("user_edit_form");a.preventDefault(),b.style.display="block"}window.addEventListener("load",windowLoadListener);
