@@ -1,6 +1,7 @@
 WikiApp::Application.routes.draw do
   
   resources :users, only: [:index, :show, :update, :destroy]
+  resources :notes, only: [:index, :show, :create, :edit, :update, :destroy]
 
   root              to: 'static_pages#home', via: :get
   root              to: 'users#create',      via: :post

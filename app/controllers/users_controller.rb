@@ -15,6 +15,7 @@ class UsersController < ApplicationController
 
   def show
     @user = User.find(params[:id])
+    @notes = @user.notes
   end
 
   def create
@@ -59,6 +60,7 @@ class UsersController < ApplicationController
   end
 
   def update
+    @notes = current_user.notes
     @user.name = params[:name]
     @user.email = params[:email]
     @user.password = params[:password]
@@ -71,15 +73,11 @@ class UsersController < ApplicationController
       redirect_to root_url
     else
       # Failed to update user profile.
-      render 'static_pages/home'
+      render 'static_pages/home_signed_in'
     end
   end
 
   private
-
-    def signed_in_user
-      redirect_to root_path, notice: "Please sign in." unless signed_in?
-    end
 
     def correct_user
       @user = User.find(params[:id])

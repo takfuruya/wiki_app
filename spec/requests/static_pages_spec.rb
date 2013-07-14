@@ -10,6 +10,21 @@ describe "Static pages" do
     it { should have_selector('title', :text => "Eqlea") }
     it { should have_selector('a', :text => "About") }
     it { should have_submit_button("Sign in") }
+
+    describe "for signed-in users" do
+      let(:user) { FactoryGirl.create(:user) }
+      before do
+        FactoryGirl.create(:note, user: user, name: "Lorem", content: "Lorem ipsum")
+        FactoryGirl.create(:note, user: user, name: "Dolor", content: "Dolor sit amet")
+        valid_signin user
+      end
+
+      it "should render the user's notes" do
+        user.notes.each do |item|
+          page.should have_selector("td", text: item.name)
+        end
+      end
+    end
   end
 
   describe "signup" do
@@ -51,7 +66,7 @@ describe "Static pages" do
 
         it { should have_selector('h1', text: user.name) }
         it { should have_selector('div.alert.alert-success', text: 'Welcome') }
-        it { should have_link('Sign out') }
+        it { should have_link('Sign Out') }
       end
     end
   end
@@ -78,11 +93,11 @@ describe "Static pages" do
       
       it { should have_selector('title', text: 'Eqlea') }
       it { should have_selector('h1', text: user.name) }
-      it { should have_link('Public profile', href: user_path(user)) }
-      it { should have_link('Sign out', href: root_path) }
+      it { should have_link('Public Profile', href: user_path(user)) }
+      it { should have_link('Sign Out', href: root_path) }
 
       describe "followed by signout" do
-        before { click_link "Sign out" }
+        before { click_link "Sign Out" }
         it { should have_submit_button("Sign in") }
       end
 
@@ -108,7 +123,7 @@ describe "Static pages" do
           it { should have_selector('title', text: 'Eqlea') }
           it { should have_selector('h1', text: new_name) }
           it { should have_selector('div.alert.alert-success') }
-          it { should have_link('Sign out', href: root_path) }
+          it { should have_link('Sign Out', href: root_path) }
           specify { user.reload.name.should  == new_name }
           specify { user.reload.email.should == new_email }
         end
@@ -120,6 +135,7 @@ describe "Static pages" do
 
     describe "for non-signed-in users" do
       let(:user) { FactoryGirl.create(:user) }
+      let!(:note) { FactoryGirl.create(:note) }
 
       describe "in the Users controller" do
         describe "submitting to the update action" do
@@ -130,6 +146,23 @@ describe "Static pages" do
         describe "visiting the user index" do
           before { visit users_path }
           it { should have_selector('title', text: 'All Users') }
+        end
+      end
+
+      describe "in the Notes controller" do
+        describe "submitting to the create action" do
+          before { post notes_path }
+          specify { response.should redirect_to(root_path) }
+        end
+
+        describe "submitting to the put action" do
+          before { put note_path(note) }
+          specify { response.should redirect_to(root_path) }
+        end
+
+        describe "submitting to the destroy action" do
+          before { delete note_path(FactoryGirl.create(:note)) }
+          specify { response.should redirect_to(root_path) }
         end
       end
     end

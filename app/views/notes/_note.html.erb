@@ -1,0 +1,4 @@
+<li>
+  <span><%= link_to note.name, note %></span>
+  <span><%= note.updated_at.strftime("%m/%d/%Y") if !note.created_at.nil? %></span>
+</li>

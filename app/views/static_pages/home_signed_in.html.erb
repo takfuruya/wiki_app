@@ -1,0 +1,46 @@
+<% provide(:title, 'Eqlea') %>
+<% assign_view_specific_stylesheets 'home_signed_in' %>
+<% assign_view_specific_javascripts 'home_signed_in' %>
+
+
+<div id="wrapper">
+  <h1><%= current_user.name %></h1>
+
+  <table id="notes_list">
+    <thead>
+      <tr>
+        <th colspan="5">Group 1 Title</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @notes.each do |note| %>
+        <tr>
+          <td class="item_name"><%= link_to note.name, note %></td>
+          <td class="item_date"><%= note.updated_at.strftime("%m/%d/%Y") if !note.created_at.nil? %></td>
+          <td class="item_edit"><%= link_to "edit", edit_note_path(note) %></td>
+          <td class="item_rename"><a href="">rename</a></td>
+          <td class="item_delete"><%= link_to "x", note_path(note), method: "delete" %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+
+  <%= form_tag notes_path, id: "new_page" do %>
+    <%= submit_tag("    +    ") %>
+  <% end %>
+
+  <footer>
+    <a href="" id="edit_link">Edit Profile</a> |
+    <%= link_to "Public Profile", current_user %> |
+    <%= link_to "Sign Out", root_path, method: "delete" %>
+  </footer>
+
+  <%= form_tag user_path(current_user), {method: :put, id: "user_edit_form"} do %>
+    <%= render 'shared/error_messages' %>
+    <%= text_field_tag :name, current_user.name %>
+    <%= text_field_tag :email, current_user.email %>
+    <%= password_field_tag :password, nil, placeholder: "Password" %>
+    <%= password_field_tag :password_confirmation, nil, placeholder: "Confirm Password" %>
+    <%= submit_tag("Save changes") %>
+  <% end %>
+</div>

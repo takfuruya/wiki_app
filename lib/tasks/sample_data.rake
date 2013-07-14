@@ -16,5 +16,12 @@ namespace :db do
                    password: password,
                    password_confirmation: password)
     end
+    
+    users = User.all(limit: 6)
+    10.times do
+      name = Faker::Lorem.sentence(2)
+      content = Faker::Lorem.paragraph(15)
+      users.each { |user| user.notes.create!(name: name, content: content) }
+    end
   end
 end

@@ -9,6 +9,7 @@
 #  updated_at      :datetime         not null
 #  password_digest :string(255)
 #  remember_token  :string(255)
+#  admin           :boolean          default(FALSE)
 #
 
 require 'spec_helper'
@@ -29,6 +30,7 @@ describe User do
   it { should respond_to(:remember_token) }
   it { should respond_to(:admin) }
   it { should respond_to(:authenticate) }
+  it { should respond_to(:notes) }
 
   it { should be_valid }
   it { should_not be_admin }
@@ -140,5 +142,29 @@ describe User do
         User.new(admin: true)
       end.to raise_error(ActiveModel::MassAssignmentSecurity::Error)
     end    
+  end
+
+  describe "note associations" do
+
+    before { @user.save }
+    let!(:older_note) do 
+      FactoryGirl.create(:note, user: @user, created_at: 1.day.ago)
+    end
+    let!(:newer_note) do
+      FactoryGirl.create(:note, user: @user, created_at: 1.hour.ago)
+    end
+
+    it "should have the right notes in the right order" do
+      @user.notes.should == [newer_note, older_note]
+    end
+
+    it "should destroy associated notes" do
+      notes = @user.notes.dup
+      @user.destroy
+      notes.should_not be_empty
+      notes.each do |note|
+        Note.find_by_id(note.id).should be_nil
+      end
+    end
   end
 end
