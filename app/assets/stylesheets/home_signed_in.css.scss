@@ -1,8 +1,25 @@
 
 #wrapper
 {
-  width: 500px;
+  width: 700px;
   margin: 0 auto;
+}
+
+header
+{
+  padding-bottom: 5px;
+  text-align: right;
+}
+
+#profile_link, #edit_link
+{
+  text-decoration: none;
+  font-weight: bold;
+}
+
+#signout_link
+{
+  text-decoration: none;
 }
 
 #new_page
@@ -15,15 +32,6 @@
 {
   width: 100%;
   border-collapse: collapse;
-}
-
-#notes_list td
-{
-  padding: 5px 0;
-  border-style: solid;
-  border-width: 0 0 1px 0;
-
-  border-color: LightGrey;
 }
 
 #notes_list th
@@ -39,6 +47,16 @@
   font-size: 140%;
 }
 
+#notes_list td
+{
+  padding: 0;
+  line-height: 30px;
+  border-style: solid;
+  border-width: 0 0 1px 0;
+
+  border-color: LightGrey;
+}
+
 #notes_list tbody tr:hover
 {
   background-color: Beige;
@@ -46,14 +64,32 @@
 
 #notes_list a
 {
+  display: block;
   text-decoration: none;
+}
+
+#notes_list img
+{
+  vertical-align: middle;
 }
 
 .item_name
 {
-  width: 200px;
-
+  width: 400px;
   font-weight: bold;
+}
+
+.item_name input
+{
+  display: none;
+  box-sizing: border-box;
+  margin: 0;
+  border-style: solid;
+  padding: 0 3px;
+
+  width: 98%;
+  font-size: 24px;
+  background-color: Lavender;
 }
 
 .item_date
@@ -67,6 +103,24 @@
   width: 60px;
 }
 
+.item_edit
+{
+  background-color: Lavender;
+}
+
+.item_rename button
+{
+  display: block;
+  width: 100%;
+  line-height: 30px;
+  border-style: none;
+  padding: 0;
+  background-color: AliceBlue;
+  font-weight: bold;
+  font-size: xx-small;
+  cursor: pointer;
+}
+
 .item_edit, .item_rename, .item_delete
 {
   text-align: center;
@@ -75,9 +129,4 @@
 #user_edit_form
 {
   display: none;
-}
-
-footer
-{
-  text-align: right;
 }

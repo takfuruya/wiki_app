@@ -26,10 +26,22 @@ class NotesController < ApplicationController
 
   def update
     @note = Note.find(params[:id])
-    @note.content = params[:content]
+    name = params[:name]
+    content = params[:content]
+    update_content = name.nil?
+
+    if update_content
+      @note.content = content
+    else
+      @note.name = name
+    end
 
     if @note.save
-      render text: @note.content
+      if update_content
+        render text: @note.content
+      else
+        render text: @note.name
+      end
     else
       # Failed to update note.
       flash[:error] = @note.errors.full_messages[0]

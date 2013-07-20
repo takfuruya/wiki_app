@@ -1,27 +1,32 @@
-window.addEventListener('load', windowLoadListener)
 
-function windowLoadListener(event)
+this.EQ = this.EQ || {};
+
+$(function(event)
 {
-  var editorTextArea = document.getElementById('editor');
+  var path = window.location.pathname.split("/");
+  EQ.id = path[2];
 
-  editorTextArea.addEventListener('input', editorInputListener);
-}
+  EQ.editor = ace.edit("editor");
+  EQ.editor.setTheme("ace/theme/monokai");
+  EQ.editor.getSession().setMode("ace/mode/markdown");
+  EQ.editor.renderer.setShowGutter(false);
+  EQ.editor.getSession().setUseWrapMode(true);
+  EQ.editor.getSession().on("change", EQ.editorChangeListener);
+});
 
-function editorInputListener(event)
+EQ.editorChangeListener = function(event)
 {
-  var content = event.currentTarget.value;
-  console.log(content);
+  // Better to have timer to prevent saving with every single input
+  var content = EQ.editor.getValue();
+  EQ.saveNoteContent(EQ.id, content, EQ.saveContentSuccessListener, EQ.saveContentFailListener);
+};
 
-$.ajax({
-    url: '/notes/64',
-    type: 'PUT',
-    dataType: 'html',
-    contentType: 'application/json; charset=UTF-8',
-    data: JSON.stringify({ content: content })
-}).done(function( msg )
-        {
-            document.getElementById('display').innerHTML = msg;
-        })
-.fail(function(jqXHR, textStatus, errorThrown) {console.log(errorThrown)});
-}
+EQ.saveContentSuccessListener = function(data, textStatus, jqXHR)
+{
+  $("#display").html(data);
+};
 
+EQ.saveContentFailListener = function(jqXHR, textStatus, errorThrown)
+{
+  console.log(errorThrown);
+};

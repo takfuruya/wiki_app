@@ -1,16 +1,14 @@
 <% provide(:title, @note.name) %>
 <% assign_view_specific_stylesheets 'edit_note' %>
-<% assign_view_specific_javascripts 'edit_note' %>
+<% assign_view_specific_javascripts 'edit_note', 'eq' %>
 
 
 <header>
-  <%= link_to "Home", root_url %>
-  <%= link_to "Preview", note_path(@note), target: "_blank" %>
+  <%= link_to "Home", root_url, id: "home_link" %>
+  <%= link_to "View", note_path(@note), target: "_blank", id: "view_link" %>
 </header>
-<div id="display">
-  <%= @note.content %>
-</div>
 
-<form>
-  <textarea id="editor"><%= @note.content %></textarea>
-</form>
+<div id="display"><%= @note.content %></div>
+
+<div id="editor"><%= @note.content %></div>
+<%= javascript_include_tag "ace" %>

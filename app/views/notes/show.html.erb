@@ -1,2 +1,7 @@
 <% provide(:title, @note.name) %>
-<%= @note.content %>
+<% assign_view_specific_stylesheets 'show_note', 'monokai' %>
+<% assign_view_specific_javascripts 'http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML' %>
+
+<div id="wrapper">
+  <%= markdown(@note.content) %>
+</div>
