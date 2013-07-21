@@ -1,3 +1,6 @@
+//= require jquery
+//= require jquery_ujs
+
 window.addEventListener('load', windowLoadListener)
 
 function windowLoadListener(event) {

@@ -1,3 +1,6 @@
+//= require jquery
+//= require jquery_ujs
+//= require eq
 
 this.EQ = this.EQ || {};
 

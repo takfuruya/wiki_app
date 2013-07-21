@@ -1,6 +1,6 @@
 <% provide(:title, @note.name) %>
 <% assign_view_specific_stylesheets 'edit_note' %>
-<% assign_view_specific_javascripts 'edit_note', 'eq' %>
+<% assign_view_specific_javascripts 'edit_note' %>
 
 
 <header>
@@ -11,4 +11,4 @@
 <div id="display"><%= @note.content %></div>
 
 <div id="editor"><%= @note.content %></div>
-<%= javascript_include_tag "ace" %>
+
