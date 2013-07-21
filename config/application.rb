@@ -71,7 +71,7 @@ module WikiApp
       'home_signed_in.js',
       'edit_note.js',
       'home.css',
-      'home_signed_in.js',
+      'home_signed_in.css',
       'show_note.css',
       'edit_note.css'
     ]
