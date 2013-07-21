@@ -1,1 +1,0 @@
-this.EQ=this.EQ||{},EQ.saveNoteContent=function(a,b,c,d){EQ.saveNote(a,{content:b},c,d)},EQ.saveNoteName=function(a,b,c,d){EQ.saveNote(a,{name:b},c,d)},EQ.saveNote=function(a,b,c,d){var e={url:"/notes/"+a,type:"PUT",dataType:"html",contentType:"application/json; charset=UTF-8",data:JSON.stringify(b)},f=$.ajax(e);f.done(c),f.fail(d)};
