@@ -1,29 +1,47 @@
 //= require jquery
 //= require jquery_ujs
 
-window.addEventListener('load', windowLoadListener)
-
-function windowLoadListener(event) {
-  var emailTextInput = document.getElementById('email');
-  var checkbox = document.getElementById('sign_up_');
+$(function(event)
+{
+  var emailTextInput = $("#email");
+  var checkbox = $("#sign_up_");
+  var errorDivs = [$("#email_error"), $("#password_error"), $("#confirmation_error")];
 
   emailTextInput.focus();
   emailTextInput.select();
 
-  checkbox.addEventListener('change', checkboxChangeListener);
-}
+  for (var i = 0; i < errorDivs.length; i++)
+  {
+    if (!errorDivs[i].children().eq(1).is(":empty"))
+    {
+      errorDivs[i].css("visibility", "visible");
+    }
+  }
+
+  refreshConfirmationDisplay();
+  checkbox.change(checkboxChangeListener);
+});
+
 
 function checkboxChangeListener(event)
 {
-  var pwConfTextInput = document.getElementById('password_confirmation');
-  var isChecked = event.currentTarget.checked;
+  refreshConfirmationDisplay();
+}
+
+function refreshConfirmationDisplay()
+{
+  var confirmationTextInput = $('#password_confirmation');
+  var confirmationErrorDiv = $('#confirmation_error');
+  var isChecked = $("#new_user").children().eq(0).prop("checked");
 
   if (isChecked)
   {
-    pwConfTextInput.style.display = "block";
+    confirmationTextInput.css("display", "block");
+    confirmationErrorDiv.css("display", "table");
   }
   else
   {
-    pwConfTextInput.style.display = "none";
+    confirmationTextInput.css("display", "none");
+    confirmationErrorDiv.css("display", "none");
   }
 }

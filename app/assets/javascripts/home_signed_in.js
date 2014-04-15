@@ -25,7 +25,7 @@ EQ.renameClickListener = function(event)
 
   this.innerHTML = "OK";
   renameButton.unbind();
-  inputTag.val(aTag.html());
+  inputTag.val(aTag.text());
   inputTag.blur(EQ.inputBlurListener);
   inputTag.keyup(EQ.inputKeyUpListener);
 
@@ -72,7 +72,7 @@ EQ.doneRenaming = function(inputTag)
     renameButton.click(EQ.renameClickListener);
   },1000);
   
-  aTag.html(newName);
+  aTag.text(newName);
   inputTag.css('display', 'none');
   aTag.css('display', 'block');
 };

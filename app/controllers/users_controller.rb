@@ -9,7 +9,7 @@ class UsersController < ApplicationController
 
   def destroy
     User.find(params[:id]).destroy
-    flash[:success] = "User destroyed."
+    flash[:top_message] = "User destroyed."
     redirect_to users_url
   end
 
@@ -27,13 +27,41 @@ class UsersController < ApplicationController
       @user.name = @user.email.split('@')[0] if !@user.email.nil?
 
       if @user.save
-        # Sign in as first time user.
+        # Sign up & sign in as first time user.
         sign_in @user
-        flash[:success] = "Welcome to the Sample App!"
+        flash[:success] = "You are signed up!"
         redirect_to root_path
       else
         # Failed to sign up.
-        render 'static_pages/home'
+        email_errors = @user.errors.get(:email)
+        password_errors = @user.errors.get(:password)
+        password_confirmation_errors = @user.errors.get(:password_confirmation)
+        if email_errors && email_errors.any?
+          if email_errors[0] == "can't be blank"
+            flash[:email_error] = "Please fill this in. Thank you."
+          elsif email_errors[0] == "is invalid"
+            flash[:email_error] = "Sorry, this is invalid."
+          elsif email_errors[0] == "has already been taken"
+            flash[:email_error] = "Sorry, this is already registered."
+          end
+        end
+        if password_errors && password_errors.any?
+          if password_errors[0] == "is too short (minimum is 6 characters)"
+            flash[:password_error] = "This needs minimum of 6 characters."
+          elsif password_errors[0] == "doesn't match confirmation"
+            flash[:password_error] = "Sorry, this does not match the confirmation."
+          end
+        end
+        if password_confirmation_errors && password_confirmation_errors.any?
+          if password_confirmation_errors[0] == "can't be blank"
+            flash[:password_confirmation_error] = "Please fill this in. Thank you."
+          else
+            flash[:password_confirmation_error] = password_confirmation_errors[0]
+          end
+        end
+        flash[:email] = @user.email
+        flash[:is_new_user] = true
+        redirect_to root_path
       end
 
       return
@@ -44,12 +72,20 @@ class UsersController < ApplicationController
       redirect_to root_url
       return
     end
+
     user = User.find_by_email(params[:email].downcase)
     if user && user.authenticate(params[:password])
       sign_in user
       redirect_to root_path
     else
-      flash[:error] = 'Invalid email/password combination'
+      if params[:email] == ""
+        flash[:email_error] = "Please fill this in. Thank you."
+      elsif params[:password] == ""
+        flash[:password_error] = "Please fill this in. Thank you."
+      else
+        flash[:email_error] = "Sorry, we do not recognize this email-password combination."
+      end
+      flash[:email] = params[:email]
       redirect_to root_path
     end
   end
@@ -68,7 +104,7 @@ class UsersController < ApplicationController
 
     if @user.save
       # Handle a successful update.
-      flash[:success] = "Profile updated"
+      flash[:top_message] = "Profile updated"
       sign_in @user
       redirect_to root_url
     else

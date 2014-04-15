@@ -9,11 +9,24 @@
   </header>
 
   <%= form_tag root_url, id: "form" do %>
-    <%= render 'shared/error_messages' %>
-    <%= text_field_tag :email, nil, placeholder: "Email" %>
+    <div id="error_explanation">
+      <div id="email_error">
+        <span><%= image_tag("left_icon.png") %></span>
+        <span><%= flash[:email_error] %></span>
+      </div>
+      <div id="password_error">
+        <span><%= image_tag("left_icon.png") %></span>
+        <span><%= flash[:password_error] %></span>
+      </div>
+      <div id="confirmation_error">
+        <span><%= image_tag("left_icon.png") %></span>
+        <span><%= flash[:password_confirmation_error] %></span>
+      </div>
+    </div>
+    <%= text_field_tag :email, flash[:email], placeholder: "Email" %>
     <%= password_field_tag :password, nil, placeholder: "Password" %>
     <%= password_field_tag :password_confirmation, nil, placeholder: "Confirm Password" %>
-    <label id="new_user"><%= check_box_tag :sign_up? %> New user</label>
+    <label id="new_user"><%= check_box_tag :sign_up?, "", flash[:is_new_user] %> New user</label>
     <%= submit_tag "Sign in", id: "submit" %>
   <% end %>
 </div>
